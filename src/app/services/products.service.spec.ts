@@ -13,6 +13,7 @@ describe('ProductsService', () => {
   let productService: ProductsService;
   let httpController: HttpTestingController;
   let tokenService: TokenService;
+  let s = 0;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
