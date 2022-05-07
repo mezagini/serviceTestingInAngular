@@ -11,6 +11,9 @@ export class ValueService {
   constructor() { }
 
   getValue() {
+    // code
+    // 10
+    // google-maps key
     return this.value;
   }
 
@@ -22,7 +25,7 @@ export class ValueService {
     return Promise.resolve('promise value');
   }
 
-  getObservable() {
+  getObservableValue() {
     return of('observable value');
   }
 }

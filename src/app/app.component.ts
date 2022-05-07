@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+
 import { Calculator } from './calculator';
 
 @Component({
@@ -7,15 +8,13 @@ import { Calculator } from './calculator';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-  title = 'ngTestingServices';
+  title = 'ng-testing-services';
 
-  ngOnInit(): void {
-    //Called after the constructor, initializing input properties, and the first call to ngOnChanges.
-    //Add 'implements OnInit' to the class.
+  ngOnInit() {
     const calculator = new Calculator();
-
-    const rta = calculator.multiply(1,4);
-    console.log(rta);
-
+    const rta = calculator.multiply(3,3);
+    console.log(rta === 9);
+    const rta2 = calculator.divide(3,0);
+    console.log(rta2 === null);
   }
 }

@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { ProductsService } from 'src/app/services/products.service';
-import { Product } from '../models/product.model';
+import { Product } from './../../models/product.model';
+
+import { ProductsService } from './../../services/product.service';
 
 @Component({
   selector: 'app-products',
@@ -12,7 +13,7 @@ export class ProductsComponent implements OnInit {
   products: Product[] = [];
 
   constructor(
-    private _productsService: ProductsService
+    private productsService: ProductsService
   ) { }
 
   ngOnInit(): void {
@@ -20,15 +21,10 @@ export class ProductsComponent implements OnInit {
   }
 
   getAllProducts() {
-    this._productsService.getAllSimple()
-      .subscribe({
-        next: (prods) => {
-          this.products = prods;
-        },
-        error: () => {
-
-        }
-      });
+    this.productsService.getAllSimple()
+    .subscribe(products => {
+      this.products = products;
+    });
   }
 
 }
