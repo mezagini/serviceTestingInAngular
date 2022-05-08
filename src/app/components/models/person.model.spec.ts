@@ -14,7 +14,7 @@ describe('Test for Person', () => {
     expect(person.lastName).toEqual('Molina');
   });
 
-  fdescribe('tests for calcIMC', () => {
+  describe('tests for calcIMC', () => {
 
     it('should retunr a string: down', () => {
       // Arrange
