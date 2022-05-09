@@ -5,7 +5,7 @@ import { Person } from '../models/person.model';
 
 import { PersonComponent } from './person.component';
 
-describe('PersonComponent', () => {
+fdescribe('PersonComponent', () => {
   let component: PersonComponent;
   let fixture: ComponentFixture<PersonComponent>;
 
@@ -56,5 +56,37 @@ describe('PersonComponent', () => {
     expect(h3Element?.textContent).toEqual('Soy un párrafo');
 
   });
+
+  it('should display text with IMC when call IMC', () => {
+    // Arrange
+    const expectMsg = 'overweight level';
+    component.person = new Person('Daniels', 'Mezas', 25, 89, 1.4);
+    const button: any = fixture.debugElement.query(By.css('button.btn-imc')).nativeElement;
+
+    // Act
+    component.calcIMC();
+    fixture.detectChanges();
+
+    // Assert
+    expect(button.textContent).toContain(expectMsg);
+
+  });
+
+  it('should display text with IMC when do click', () => {
+    // Arrange
+    const expectMsg = 'down';
+    component.person = new Person('Daniels', 'Mezas', 38, 40, 1.65);
+    const buttonDebug: DebugElement = fixture.debugElement.query(By.css('button.btn-imc'));
+    const buttonElement: any = buttonDebug.nativeElement;
+
+    // Act
+    buttonDebug.triggerEventHandler('click', null);
+    fixture.detectChanges();
+
+    // Assert
+    expect(buttonElement.textContent).toContain(expectMsg);
+
+  });
+
 
 });
