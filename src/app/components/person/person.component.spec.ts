@@ -1,4 +1,4 @@
-import { DebugElement } from '@angular/core';
+import { Component, DebugElement } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { Person } from '../models/person.model';
@@ -109,5 +109,65 @@ fdescribe('PersonComponent', () => {
   });
 
 
+
+});
+
+@Component({
+  template: `<app-person [person]="person" (onSelected)="onSelected($event)"></app-person>`
+})
+class HostComponent {
+  person = new Person('Santi', 'Molina', 12, 110, 1.80)
+  selectedPerson: Person | undefined;
+
+  onSelected(person: Person) {
+    this.selectedPerson = person;
+  }
+}
+
+fdescribe('PersonComponent from HostComponent', () => {
+  let component: HostComponent;
+  let fixture: ComponentFixture<HostComponent>;
+
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
+      declarations: [ HostComponent, PersonComponent ]
+    })
+    .compileComponents();
+  });
+
+  beforeEach(() => {
+    fixture = TestBed.createComponent(HostComponent);
+    component = fixture.componentInstance;
+    fixture.detectChanges();
+  });
+
+  it('should create', () => {
+    expect(component).toBeTruthy();
+  });
+
+  it(' should display person name', () => {
+    //Arr
+    const expectedName = component.person.name;
+    const h3Debug = fixture.debugElement.query(By.css('app-person h3'));
+    const h3Element = h3Debug.nativeElement;
+
+    // Act
+    fixture.detectChanges();
+
+    // Ass
+    expect(h3Element.textContent).toContain(expectedName);
+  });
+
+  it(' should raise selected event when clicked', () => {
+    //Arr
+    const buttonDebug = fixture.debugElement.query(By.css('app-person .btn-choose'));
+
+    // Act
+    buttonDebug.triggerEventHandler('click', null);
+    fixture.detectChanges();
+
+    // Ass
+    expect(component.selectedPerson).toEqual(component.person);
+  });
 
 });
