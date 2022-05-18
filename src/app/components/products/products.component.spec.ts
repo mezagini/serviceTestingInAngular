@@ -16,26 +16,45 @@ fdescribe('ProductsComponent', () => {
     const prodServiceSpy = jasmine.createSpyObj('ProductsService', ['getAll']);
 
     await TestBed.configureTestingModule({
-      declarations: [ ProductsComponent, ProductComponent ],
+      declarations: [ProductsComponent, ProductComponent],
       providers: [
-        { provide: ProductsService, useValue: prodServiceSpy}
+        { provide: ProductsService, useValue: prodServiceSpy }
       ]
     })
-    .compileComponents();
+      .compileComponents();
   });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(ProductsComponent);
     component = fixture.componentInstance;
     productService = TestBed.inject(ProductsService) as jasmine.SpyObj<ProductsService>;
-  });
 
-  it('should create', () => {
     const productMock = generateManyProducts(3);
     productService.getAll.and.returnValue(of(productMock));
 
     fixture.detectChanges();
+  });
+
+  it('should create', () => {
     expect(component).toBeTruthy();
     expect(productService.getAll).toHaveBeenCalled();
+  });
+
+  describe('tests for getAllProducts', () => {
+
+    it('should return product list from service', () => {
+      // Arr
+      const productMock = generateManyProducts(10);
+      const countPrev = component.products.length;
+      productService.getAll.and.returnValue(of(productMock));
+
+      // Act
+      component.getAllProducts();
+      fixture.detectChanges();
+
+      // Assert
+      expect(component.products.length).toEqual(productMock.length + countPrev);
+    });
+
   });
 });
