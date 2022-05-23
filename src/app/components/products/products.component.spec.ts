@@ -1,6 +1,7 @@
 import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { of, defer } from 'rxjs';
 import { ProductsService } from 'src/app/services/product.service';
+import { ValueService } from 'src/app/services/value.service';
 import { generateManyProducts } from '../models/product.mock';
 import { ProductComponent } from '../product/product.component';
 
@@ -10,15 +11,18 @@ fdescribe('ProductsComponent', () => {
   let component: ProductsComponent;
   let fixture: ComponentFixture<ProductsComponent>;
   let productService: jasmine.SpyObj<ProductsService>;
+  let valueService: jasmine.SpyObj<ValueService>;
 
   beforeEach(async () => {
 
     const prodServiceSpy = jasmine.createSpyObj('ProductsService', ['getAll']);
+    const valueServiceSpy = jasmine.createSpyObj('ValueService', ['getPromiseValue']);
 
     await TestBed.configureTestingModule({
       declarations: [ProductsComponent, ProductComponent],
       providers: [
-        { provide: ProductsService, useValue: prodServiceSpy }
+        { provide: ProductsService, useValue: prodServiceSpy },
+        { provide: ValueService, useValue: valueServiceSpy },
       ]
     })
       .compileComponents();
@@ -28,6 +32,7 @@ fdescribe('ProductsComponent', () => {
     fixture = TestBed.createComponent(ProductsComponent);
     component = fixture.componentInstance;
     productService = TestBed.inject(ProductsService) as jasmine.SpyObj<ProductsService>;
+    valueService = TestBed.inject(ValueService) as jasmine.SpyObj<ValueService>;
 
     const productMock = generateManyProducts(3);
     productService.getAll.and.returnValue(of(productMock));
@@ -40,7 +45,7 @@ fdescribe('ProductsComponent', () => {
     expect(productService.getAll).toHaveBeenCalled();
   });
 
-  describe('tests for getAllProducts', () => {
+  fdescribe('tests for getAllProducts', () => {
 
     it('should return product list from service', () => {
       // Arr
@@ -74,6 +79,23 @@ fdescribe('ProductsComponent', () => {
       expect(component.status).toEqual('success');
     }));
 
+
+  });
+
+  describe('tests for callPromise', () => {
+    it('should call to promise',  async () => { // también se puede hacer con fakeAsync (con las promesas)
+      // Arr
+      const mockMsg = 'my mock str';
+      valueService.getPromiseValue.and.returnValue(Promise.resolve(mockMsg));
+
+      // Act
+      await component.callPromise();
+      fixture.detectChanges();
+
+      // Assert
+      expect(component.rta).toEqual(mockMsg);
+      expect(valueService.getPromiseValue).toHaveBeenCalled();
+    });
 
   });
 });
