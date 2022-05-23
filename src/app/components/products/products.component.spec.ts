@@ -1,4 +1,5 @@
 import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
+import { By } from '@angular/platform-browser';
 import { of, defer } from 'rxjs';
 import { ProductsService } from 'src/app/services/product.service';
 import { ValueService } from 'src/app/services/value.service';
@@ -82,7 +83,7 @@ fdescribe('ProductsComponent', () => {
 
   });
 
-  describe('tests for callPromise', () => {
+  fdescribe('tests for callPromise', () => {
     it('should call to promise',  async () => { // también se puede hacer con fakeAsync (con las promesas)
       // Arr
       const mockMsg = 'my mock str';
@@ -96,6 +97,24 @@ fdescribe('ProductsComponent', () => {
       expect(component.rta).toEqual(mockMsg);
       expect(valueService.getPromiseValue).toHaveBeenCalled();
     });
+
+    it('should show "my mock str"',  fakeAsync (() => { // también se puede hacer con fakeAsync (con las promesas)
+      // Arr
+      const mockMsg = 'my mock str';
+      valueService.getPromiseValue.and.returnValue(Promise.resolve(mockMsg));
+      const btnDebug = fixture.debugElement.query(By.css('.btn-promise'));
+
+      // Act
+      btnDebug.triggerEventHandler('click', null);
+      tick();
+      fixture.detectChanges();
+      const rtaDebug = fixture.debugElement.query(By.css('p.rta'));
+
+      // Assert
+      expect(component.rta).toEqual(mockMsg);
+      expect(valueService.getPromiseValue).toHaveBeenCalled();
+      expect(rtaDebug.nativeElement.textContent).toEqual(mockMsg);
+    }));
 
   });
 });
