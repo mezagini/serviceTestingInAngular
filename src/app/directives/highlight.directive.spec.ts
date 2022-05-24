@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { FormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { HighlightDirective } from './highlight.directive';
 
@@ -9,9 +10,11 @@ import { HighlightDirective } from './highlight.directive';
     <h5 highlight="yellow">Hay un valor</h5>
     <p highlight="blue">párrafo</p>
     <p>párrafo</p>
+    <input [(ngModel)]="color" [highlight]="color">
     `
 })
 class HostComponent {
+  color = 'pink';
 
 }
 
@@ -21,7 +24,8 @@ fdescribe('HighlightDirective', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ HostComponent, HighlightDirective ]
+      declarations: [ HostComponent, HighlightDirective ],
+      imports: [ FormsModule ]
     })
     .compileComponents();
   });
@@ -40,7 +44,7 @@ fdescribe('HighlightDirective', () => {
     const elements = fixture.debugElement.queryAll(By.directive(HighlightDirective));
     const elementsWithOutDirective = fixture.debugElement.queryAll(By.css('*:not([highlight])'));
 
-    expect(elements.length).toEqual(3);
+    expect(elements.length).toEqual(4);
     expect(elementsWithOutDirective.length).toEqual(1);
   });
 
@@ -57,6 +61,21 @@ fdescribe('HighlightDirective', () => {
     const dir = titleDebug.injector.get(HighlightDirective);
 
     expect(titleDebug.nativeElement.style.backgroundColor).toEqual(dir.defaultColor);
+  });
+
+  it('should bind <input> and change the bgColor', () => {
+    const inputDebug = fixture.debugElement.query(By.css('input'));
+    const inputEl: HTMLInputElement = inputDebug.nativeElement;
+
+    expect(inputEl.style.backgroundColor).toEqual('pink');
+
+    inputEl.value = 'red';
+    inputEl.dispatchEvent(new Event('input'));
+    fixture.detectChanges();
+
+    expect(inputEl.style.backgroundColor).toEqual('red');
+    expect(component.color).toEqual('red');
+
   });
 
 });
