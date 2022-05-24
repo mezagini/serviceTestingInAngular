@@ -3,4 +3,9 @@
   <h5 highlight>Hay un valor</h5>
   <h5 highlight="yellow">Hay un valor</h5>
   <input [(ngModel)]="color" [highlight]="color">
+
+  <h3>Pipe</h3>
+  <p>{{ 'mi texto' | reserve }}</p>
+  <input [(ngModel)]="text">
+  <p>{{ text | reserve }}</p>
 </section>
