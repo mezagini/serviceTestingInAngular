@@ -1,11 +1,10 @@
 <section class="container">
-  <p>Directiva</p>
-  <h5 highlight>Hay un valor</h5>
-  <h5 highlight="yellow">Hay un valor</h5>
-  <input [(ngModel)]="color" [highlight]="color">
+  <h5 highlight="yellow">Something Yellow</h5>
+  <h5 highlight>The Default (Gray)</h5>
+  <h5>No Highlight</h5>
+  <input [(ngModel)]="color" [highlight]="color" />
 
-  <h3>Pipe</h3>
-  <p>{{ 'mi texto' | reserve }}</p>
-  <input [(ngModel)]="text">
-  <p>{{ text | reserve }}</p>
+  <h3>{{ 'Texto largo' | reverse }}</h3>
+  <input [(ngModel)]="text" />
+  <p>{{ text | reverse }}</p>
 </section>

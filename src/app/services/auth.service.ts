@@ -4,8 +4,8 @@ import { switchMap, tap } from 'rxjs/operators';
 import { BehaviorSubject } from 'rxjs';
 
 import { environment } from './../../environments/environment';
-import { Auth } from './../models/auth.model';
-import { User } from './../models/user.model';
+import { Auth } from '../models/auth.model';
+import { User } from '../models/user.model';
 import { TokenService } from './../services/token.service';
 
 @Injectable({

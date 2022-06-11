@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { Person } from '../models/person.model';
+
+import { Person } from './../../models/person';
 
 @Component({
   selector: 'app-people',
@@ -9,19 +10,17 @@ import { Person } from '../models/person.model';
 export class PeopleComponent implements OnInit {
 
   people: Person[] = [
-    new Person('Daniel', 'Meza', 25, 105, 1.80),
-    new Person('Pepo', 'Mendoza', 25, 105, 1.80),
-    new Person('Papri', 'Popi', 25, 105, 1.80),
+    new Person('Nicolas', 'Molina', 28, 68, 1.70),
+    new Person('Valentina', 'Molina', 13, 40, 1.60),
   ];
-
-  selectedPerson: Person | null = null;
+  selectedPerson!: Person;
 
   constructor() { }
 
   ngOnInit(): void {
   }
 
-  choose(person: Person) {
+  onSelect(person: Person){
     this.selectedPerson = person;
   }
 
